@@ -10,3 +10,4 @@ alwaysApply: true
 - Backend should be oriented on DDD
 - The development process should be oriented on BDD
 - The application should be launched in Docker
+- Use `.docs/ai/` for the context of the application
