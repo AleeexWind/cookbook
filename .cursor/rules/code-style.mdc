@@ -1,0 +1,12 @@
+---
+description: C# code style conventions for this project
+globs: **/*.cs
+alwaysApply: false
+---
+
+# Code Style
+
+- Use primary constructors
+- Use `var` where it is possible
+- Use `Async` suffix for asynchronous methods
+- Write XML comments for all public elements
