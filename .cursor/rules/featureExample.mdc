@@ -1,6 +1,6 @@
 ---
 description: Example BDD feature format for application features
-globs: .feature/**
+globs: .features/**
 alwaysApply: false
 ---
 
