@@ -11,4 +11,4 @@ alwaysApply: true
 - The development process should be oriented on BDD
 - The application should be launched in Docker
 - Use `.docs/ai/` for the context of the application
-- Use `.feature/` for the context of the application features
+- Use `.features/` for the context of the application features
