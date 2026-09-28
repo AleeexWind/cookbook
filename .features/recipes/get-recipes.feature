@@ -5,10 +5,10 @@ Feature: Get recipes
     Scenario: Get list of recipes
         Given There are 3 recipes in the database
         When I am on the recipes page
-        Then I should see the recipes with title, description, cooking time, difficulty and photo
+        Then I should see the recipes with title, description, cooking time, difficulty, photo and tag
 
     Examples:
-       | Title              | Description           | Cooking time | Difficulty | Photo        |
-       | Pasta Carbonara    | Classic Italian pasta | 30           | Easy       | carbonara.jpg|
-       | Chicken Stir Fry   | Quick Asian dish      | 25           | Medium     | stirfry.jpg  |
-       | Chocolate Cake     | Rich dessert          | 60           | Hard       | cake.jpg     |
+       | Title              | Description           | Cooking time | Difficulty | Photo         | Tag     |
+       | Pasta Carbonara    | Classic Italian pasta | 30           | Easy       | carbonara.jpg | dinner  |
+       | Chicken Stir Fry   | Quick Asian dish      | 25           | Medium     | stirfry.jpg   | quick   |
+       | Chocolate Cake     | Rich dessert          | 60           | Hard       | cake.jpg      | dessert |
