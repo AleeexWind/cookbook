@@ -1,0 +1,24 @@
+---
+description: Example BDD feature format for application features
+globs: .feature/**
+alwaysApply: false
+---
+
+# Feature Example
+
+```gherkin
+Feature: Get questions
+    As a user I want to get all the questions of the questionnaire
+
+    Scenario: Get questions of the questionnaire
+        Given I am logged in as a user
+        And There is a questionnaire with 3 questions in database
+        When I am on questionnaire page
+        Then I should see the questions with the response field
+
+    Examples:
+       | Question Position | Question           | Response  |
+       | 1                 | What is your name? |           |
+       | 2                 | How old are you?   |           |
+       | 3                 | What is your job?  |           |
+```
