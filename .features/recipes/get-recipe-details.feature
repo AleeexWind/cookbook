@@ -1,12 +1,17 @@
-Feature: Get recipe ingredients
-    As a user I want to see recipe ingredients with quantities and units
-    so that I know what I need to cook
+Feature: Get recipe details
+    As a user I want to see full recipe details including characteristics and ingredients
+    so that I know what the recipe is and what I need to cook
 
-    Scenario: View ingredients for a selected recipe
+    Scenario: View recipe details for a selected recipe
         Given There is a public recipe "Pasta Carbonara" for 2 portions in the database
         And The recipe has the following ingredients
         When I open the recipe "Pasta Carbonara" from the recipes page
-        Then I should see ingredients with name, quantity, unit and portions set to 2
+        Then I should see title, description, cooking time, difficulty, photo, category, tags, rating, visibility and author
+        And I should see ingredients with name, quantity, unit and portions set to 2
+
+    Examples:
+       | Title           | Description           | Cooking time | Difficulty | Photo         | Category | Tags  | Rating | Visibility | Author | Portions |
+       | Pasta Carbonara | Classic Italian pasta | 30           | Easy       | carbonara.jpg | dinner   | quick | 4.5    | public     | alice  | 2        |
 
     Examples:
        | Ingredient | Quantity | Unit  |
