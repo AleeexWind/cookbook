@@ -5,9 +5,11 @@ Feature: Get recipe details
     Scenario: View recipe details for a selected recipe
         Given There is a public recipe "Pasta Carbonara" for 2 portions in the database
         And The recipe has the following ingredients
+        And The recipe has the following comments
         When I open the recipe "Pasta Carbonara" from the recipes page
         Then I should see title, description, cooking time, difficulty, photo, category, tags, rating, visibility and author
         And I should see ingredients with name, quantity, unit and portions set to 2
+        And I should see comments ordered from newest to oldest with author name, text and posted at
 
     Examples:
        | Title           | Description           | Cooking time | Difficulty | Photo         | Category | Tags  | Rating | Visibility | Author | Portions |
@@ -19,6 +21,12 @@ Feature: Get recipe details
        | Eggs       | 2        | units |
        | Bacon      | 100      | g     |
        | Milk       | 50       | ml    |
+
+    Examples:
+       | Author | Text            | Posted at        |
+       | bob    | Looks delicious  | 2026-09-28 18:00 |
+       | alice  | Family favorite  | 2026-09-27 12:00 |
+       | bob    | Made it twice    | 2026-09-26 09:00 |
 
     Scenario: Scale ingredients when portions change
         Given There is a public recipe "Pasta Carbonara" for 2 portions in the database
