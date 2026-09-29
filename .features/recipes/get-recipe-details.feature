@@ -8,14 +8,14 @@ Feature: Get recipe details
         And The recipe has the following comments
         And I am not logged in
         When I open the recipe "Pasta Carbonara" from the recipes page
-        Then I should see title, description, cooking time, difficulty, photo, category, tags, rating, visibility and author
+        Then I should see title, description, cooking time, difficulty, photo, category, tags, average rating (1-5 stars), visibility and author
         And I should see ingredients with name, quantity, unit and portions set to 2
         And I should see comments ordered from newest to oldest with author name, text and posted at
         And I should not see the favourites mark
 
     Examples:
-       | Title           | Description           | Cooking time | Difficulty | Photo         | Category | Tags  | Rating | Visibility | Author | Portions |
-       | Pasta Carbonara | Classic Italian pasta | 30           | Easy       | carbonara.jpg | dinner   | quick | 4.5    | public     | alice  | 2        |
+       | Title           | Description           | Cooking time | Difficulty | Photo         | Category | Tags  | Average rating | Visibility | Author | Portions |
+       | Pasta Carbonara | Classic Italian pasta | 30           | Easy       | carbonara.jpg | dinner   | quick | 4.5            | public     | alice  | 2        |
 
     Examples:
        | Ingredient | Quantity | Unit  |
@@ -37,14 +37,14 @@ Feature: Get recipe details
         And I am logged in as "bob"
         And I have favourited the recipe "Pasta Carbonara"
         When I open the recipe "Pasta Carbonara" from the recipes page
-        Then I should see title, description, cooking time, difficulty, photo, category, tags, rating, visibility and author
+        Then I should see title, description, cooking time, difficulty, photo, category, tags, average rating (1-5 stars), visibility and author
         And I should see ingredients with name, quantity, unit and portions set to 2
         And I should see comments ordered from newest to oldest with author name, text and posted at
         And I should see the favourites mark as active
 
     Examples:
-       | Title           | Description           | Cooking time | Difficulty | Photo         | Category | Tags  | Rating | Visibility | Author | Portions | Favourite |
-       | Pasta Carbonara | Classic Italian pasta | 30           | Easy       | carbonara.jpg | dinner   | quick | 4.5    | public     | alice  | 2        | active    |
+       | Title           | Description           | Cooking time | Difficulty | Photo         | Category | Tags  | Average rating | Visibility | Author | Portions | Favourite |
+       | Pasta Carbonara | Classic Italian pasta | 30           | Easy       | carbonara.jpg | dinner   | quick | 4.5            | public     | alice  | 2        | active    |
 
     Examples:
        | Ingredient | Quantity | Unit  |
