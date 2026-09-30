@@ -55,3 +55,19 @@ Feature: Shopping list
         When I remove "Pasta Carbonara" from Monday dinner
         Then The shopping list should no longer include "Spaghetti"
         And Ingredient "Chicken" should be 300 g
+
+    Scenario: Export shopping list to CSV
+        Given I am logged in as "alice"
+        And There is a public recipe "Pasta Carbonara" for 2 portions with ingredient "Spaghetti" quantity 200 g
+        And My menu plan portions are 2
+        And I have placed "Pasta Carbonara" in Monday dinner
+        And I have generated the shopping list
+        When I export the shopping list to CSV
+        Then I should receive a CSV file with columns Ingredient, Quantity and Unit
+        And The CSV should contain a row for "Spaghetti" with quantity 200 and unit "g"
+
+    Scenario: Cannot export shopping list when it was not generated
+        Given I am logged in as "alice"
+        And My menu plan has no recipes
+        When I open the menu plan page
+        Then I should not be able to export the shopping list to CSV
