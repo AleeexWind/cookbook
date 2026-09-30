@@ -43,3 +43,15 @@ Feature: Shopping list
         When I open the menu plan page
         And I generate the shopping list
         Then Ingredient "Spaghetti" should be 400 g
+
+    Scenario: Shopping list updates when a recipe is removed from the plan
+        Given I am logged in as "alice"
+        And There is a public recipe "Pasta Carbonara" for 2 portions with ingredient "Spaghetti" quantity 200 g
+        And There is a public recipe "Chicken Stir Fry" for 2 portions with ingredient "Chicken" quantity 300 g
+        And My menu plan portions are 2
+        And I have placed "Pasta Carbonara" in Monday dinner
+        And I have placed "Chicken Stir Fry" in Tuesday lunch
+        And I have generated the shopping list
+        When I remove "Pasta Carbonara" from Monday dinner
+        Then The shopping list should no longer include "Spaghetti"
+        And Ingredient "Chicken" should be 300 g
