@@ -39,8 +39,37 @@ Feature: Get recipes
         And I sort by average rating asc
         Then I should see recipes sorted by average rating from lowest to highest
 
+    Scenario: Search recipes by name
+        Given I am not logged in
+        And There are recipes in the database
+        When I am on the recipes page
+        And I search for "Carbonara"
+        Then I should see only the recipe "Pasta Carbonara"
+
+    Scenario: Search recipes by tag
+        Given I am logged in as "alice"
+        And There are recipes in the database
+        When I am on the recipes page
+        And I search for "vegan"
+        Then I should see only the recipe "Chicken Stir Fry"
+
+    Scenario: Search recipes by ingredients
+        Given I am logged in as "alice"
+        And There are recipes in the database
+        When I am on the recipes page
+        And I search for "chicken rice"
+        Then I should see only the recipe "Chicken Stir Fry"
+        And I should not see ingredients on the recipes list
+
+    Scenario: Search does not show recipes the user cannot see
+        Given I am not logged in
+        And There are recipes in the database
+        When I am on the recipes page
+        And I search for "Cake"
+        Then I should not see the recipe "Chocolate Cake"
+
     Examples:
-       | Title              | Description           | Cooking time | Difficulty | Photo         | Category | Tags         | Average rating | Visibility | Author | Comments count | Favourite | Created at |
-       | Pasta Carbonara    | Classic Italian pasta | 30           | Easy       | carbonara.jpg | dinner   | quick        | 4.5            | public     | alice  | 3              | active    | 2026-09-28 |
-       | Chicken Stir Fry   | Quick Asian dish      | 25           | Medium     | stirfry.jpg   | lunch    | quick, vegan | 4.0            | private    | alice  | 1              | inactive  | 2026-09-20 |
-       | Chocolate Cake     | Rich dessert          | 60           | Hard       | cake.jpg      | dessert  |              | 5.0            | private    | bob    | 0              |           | 2026-09-15 |
+       | Title              | Description           | Cooking time | Difficulty | Photo         | Category | Tags         | Average rating | Visibility | Author | Comments count | Favourite | Created at | Ingredients                    |
+       | Pasta Carbonara    | Classic Italian pasta | 30           | Easy       | carbonara.jpg | dinner   | quick        | 4.5            | public     | alice  | 3              | active    | 2026-09-28 | Spaghetti, Eggs, Bacon, Milk   |
+       | Chicken Stir Fry   | Quick Asian dish      | 25           | Medium     | stirfry.jpg   | lunch    | quick, vegan | 4.0            | private    | alice  | 1              | inactive  | 2026-09-20 | Chicken, Rice, Soy sauce       |
+       | Chocolate Cake     | Rich dessert          | 60           | Hard       | cake.jpg      | dessert  |              | 5.0            | private    | bob    | 0              |           | 2026-09-15 | Chocolate, Flour, Eggs         |
