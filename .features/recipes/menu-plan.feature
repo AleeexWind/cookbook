@@ -24,6 +24,14 @@ Feature: Menu plan
         And I drag "Pasta Carbonara" from the recipe picker to Monday dinner
         Then Monday dinner should contain "Pasta Carbonara"
 
+    Scenario: Remove a recipe from a day slot
+        Given I am logged in as "alice"
+        And There is a public recipe "Pasta Carbonara" for 2 portions
+        And I have placed "Pasta Carbonara" in Monday dinner
+        When I open the menu plan page
+        And I remove "Pasta Carbonara" from Monday dinner
+        Then Monday dinner should not contain "Pasta Carbonara"
+
     Scenario: Plan portions scale recipe ingredients
         Given I am logged in as "alice"
         And There is a public recipe "Pasta Carbonara" for 2 portions with ingredient "Spaghetti" quantity 200 g
