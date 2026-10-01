@@ -14,3 +14,9 @@
 - **ShoppingList** — derived via `ShoppingListGenerator` (not persisted as source of truth)
 
 Ubiquitous language: root `CONTEXT.md`.
+
+## Application layer
+
+- MediatR queries for recipes list and details (`GetRecipesQuery`, `GetRecipeDetailsQuery`)
+- Read ports: `IRecipeReadStore`, `IFavouriteReadStore`, `IUserReadStore` (implemented later in Infrastructure)
+- No EF/API in this slice yet — next step is Infrastructure + REST
