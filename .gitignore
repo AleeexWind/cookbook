@@ -7,3 +7,8 @@ obj/
 *.DotSettings.user
 TestResults/
 *.nupkg
+
+## Secrets / local overrides
+.env
+**/appsettings.*.local.json
+**/appsettings.Development.local.json

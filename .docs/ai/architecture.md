@@ -25,7 +25,7 @@ Ubiquitous language: root `CONTEXT.md`.
 - EF Core + PostgreSQL (`Cookbook.Infrastructure`), initial migration + seed (alice/bob + 3 recipes)
 - REST API (`Cookbook.Api`): `GET /api/recipes`, `GET /api/recipes/{id}`
 - Auth stub: optional `X-User: alice|bob` header (JWT later)
-- Docker Compose: PostgreSQL + API (`docker compose up --build`)
+- Docker Compose: PostgreSQL + API (`docker compose up --build`); DB credentials via gitignored `.env` (see `.env.example`)
 
 ## Next
 

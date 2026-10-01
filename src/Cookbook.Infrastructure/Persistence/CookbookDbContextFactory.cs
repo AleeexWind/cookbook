@@ -1,4 +1,3 @@
-using Cookbook.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
@@ -12,8 +11,12 @@ public sealed class CookbookDbContextFactory : IDesignTimeDbContextFactory<Cookb
     /// <inheritdoc />
     public CookbookDbContext CreateDbContext(string[] args)
     {
+        var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__Cookbook")
+            ?? throw new InvalidOperationException(
+                "Set ConnectionStrings__Cookbook (for example via .env / user-secrets) before running EF tools.");
+
         var options = new DbContextOptionsBuilder<CookbookDbContext>()
-            .UseNpgsql("Host=localhost;Port=5432;Database=cookbook;Username=postgres;Password=postgres")
+            .UseNpgsql(connectionString)
             .Options;
 
         return new CookbookDbContext(options);
