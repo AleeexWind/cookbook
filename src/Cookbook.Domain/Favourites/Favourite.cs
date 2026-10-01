@@ -24,6 +24,13 @@ public sealed class Favourite : AggregateRoot
     /// </summary>
     public bool IsActive { get; private set; }
 
+    /// <summary>
+    /// EF Core materialization constructor.
+    /// </summary>
+    private Favourite()
+    {
+    }
+
     private Favourite(Guid id, UserId userId, RecipeId recipeId, bool isActive)
         : base(id)
     {
@@ -37,9 +44,10 @@ public sealed class Favourite : AggregateRoot
     /// </summary>
     /// <param name="userId">User who favourites.</param>
     /// <param name="recipeId">Recipe to favourite.</param>
+    /// <param name="id">Optional fixed id for seeding.</param>
     /// <returns>A new active favourite.</returns>
-    public static Favourite Activate(UserId userId, RecipeId recipeId)
-        => new(Guid.NewGuid(), userId, recipeId, isActive: true);
+    public static Favourite Activate(UserId userId, RecipeId recipeId, Guid? id = null)
+        => new(id ?? Guid.NewGuid(), userId, recipeId, isActive: true);
 
     /// <summary>
     /// Activates the favourite mark.

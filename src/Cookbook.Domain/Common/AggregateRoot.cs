@@ -6,6 +6,13 @@ namespace Cookbook.Domain.Common;
 public abstract class AggregateRoot : Entity
 {
     /// <summary>
+    /// EF Core materialization constructor.
+    /// </summary>
+    protected AggregateRoot()
+    {
+    }
+
+    /// <summary>
     /// Initializes a new aggregate root with the specified id.
     /// </summary>
     /// <param name="id">Unique identifier.</param>

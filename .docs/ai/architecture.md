@@ -18,5 +18,11 @@ Ubiquitous language: root `CONTEXT.md`.
 ## Application layer
 
 - MediatR queries for recipes list and details (`GetRecipesQuery`, `GetRecipeDetailsQuery`)
-- Read ports: `IRecipeReadStore`, `IFavouriteReadStore`, `IUserReadStore` (implemented later in Infrastructure)
-- No EF/API in this slice yet — next step is Infrastructure + REST
+- Read ports: `IRecipeReadStore`, `IFavouriteReadStore`, `IUserReadStore`
+
+## Infrastructure + API
+
+- EF Core + PostgreSQL (`Cookbook.Infrastructure`), initial migration + seed (alice/bob + 3 recipes)
+- REST API (`Cookbook.Api`): `GET /api/recipes`, `GET /api/recipes/{id}`
+- Auth stub: optional `X-User: alice|bob` header (JWT later)
+- Next: Docker Compose for PostgreSQL + API

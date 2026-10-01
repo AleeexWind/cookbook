@@ -23,6 +23,14 @@ public sealed class Comment : Entity
     /// </summary>
     public DateTimeOffset PostedAt { get; private set; }
 
+    /// <summary>
+    /// EF Core materialization constructor.
+    /// </summary>
+    private Comment()
+    {
+        Text = null!;
+    }
+
     internal Comment(Guid id, UserId authorId, string text, DateTimeOffset postedAt)
         : base(id)
     {

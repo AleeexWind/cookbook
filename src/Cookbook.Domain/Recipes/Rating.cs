@@ -18,6 +18,13 @@ public sealed class Rating : Entity
     /// </summary>
     public int Stars { get; private set; }
 
+    /// <summary>
+    /// EF Core materialization constructor.
+    /// </summary>
+    private Rating()
+    {
+    }
+
     internal Rating(Guid id, UserId userId, int stars)
         : base(id)
     {

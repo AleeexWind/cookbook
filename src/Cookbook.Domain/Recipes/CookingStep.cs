@@ -17,6 +17,14 @@ public sealed class CookingStep : Entity
     /// </summary>
     public string Instruction { get; private set; }
 
+    /// <summary>
+    /// EF Core materialization constructor.
+    /// </summary>
+    private CookingStep()
+    {
+        Instruction = null!;
+    }
+
     internal CookingStep(Guid id, int order, string instruction)
         : base(id)
     {
