@@ -22,6 +22,14 @@ public sealed class IngredientLine : Entity
     /// </summary>
     public MeasurementUnit Unit { get; private set; }
 
+    /// <summary>
+    /// EF Core materialization constructor.
+    /// </summary>
+    private IngredientLine()
+    {
+        Name = null!;
+    }
+
     internal IngredientLine(Guid id, string name, decimal quantity, MeasurementUnit unit)
         : base(id)
     {

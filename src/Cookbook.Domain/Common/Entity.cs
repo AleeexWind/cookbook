@@ -11,6 +11,13 @@ public abstract class Entity
     public Guid Id { get; protected set; }
 
     /// <summary>
+    /// EF Core materialization constructor.
+    /// </summary>
+    protected Entity()
+    {
+    }
+
+    /// <summary>
     /// Initializes a new entity with the specified id.
     /// </summary>
     /// <param name="id">Unique identifier.</param>

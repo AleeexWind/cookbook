@@ -107,6 +107,16 @@ public sealed class Recipe : AggregateRoot
     /// </summary>
     public int CommentsCount => _comments.Count;
 
+    /// <summary>
+    /// EF Core materialization constructor.
+    /// </summary>
+    private Recipe()
+    {
+        Title = null!;
+        Description = null!;
+        Photo = null!;
+    }
+
     private Recipe(
         Guid id,
         string title,
@@ -149,10 +159,11 @@ public sealed class Recipe : AggregateRoot
         DateTimeOffset createdAt,
         IEnumerable<IngredientLine>? ingredients = null,
         IEnumerable<CookingStep>? steps = null,
-        IEnumerable<Tag>? tags = null)
+        IEnumerable<Tag>? tags = null,
+        Guid? id = null)
     {
         var recipe = new Recipe(
-            Guid.NewGuid(),
+            id ?? Guid.NewGuid(),
             title,
             description,
             cookingTimeMinutes,
