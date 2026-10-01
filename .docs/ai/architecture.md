@@ -18,17 +18,22 @@ Ubiquitous language: root `CONTEXT.md`.
 ## Application layer
 
 - MediatR queries for recipes list and details (`GetRecipesQuery`, `GetRecipeDetailsQuery`)
+- MediatR commands: `SetFavouriteCommand`, `SetRatingCommand`, `AddCommentCommand`, `DeleteCommentCommand`
 - Read ports: `IRecipeReadStore`, `IFavouriteReadStore`, `IUserReadStore`
+- Write ports: `IRecipeRepository`, `IFavouriteRepository`
 
 ## Infrastructure + API
 
 - EF Core + PostgreSQL (`Cookbook.Infrastructure`), initial migration + seed (alice/bob + 3 recipes)
-- REST API (`Cookbook.Api`): `GET /api/recipes`, `GET /api/recipes/{id}`
-- Auth stub: optional `X-User: alice|bob` header (JWT later)
+- REST API (`Cookbook.Api`):
+  - `GET /api/recipes`, `GET /api/recipes/{id}`
+  - `PUT /api/recipes/{id}/favourite`, `PUT /api/recipes/{id}/rating`
+  - `POST /api/recipes/{id}/comments`, `DELETE /api/recipes/{id}/comments/{commentId}`
+- Auth stub: optional `X-User: alice|bob` header (JWT later); writes require auth
 - Docker Compose: PostgreSQL + API (`docker compose up --build`); DB credentials via gitignored `.env` (see `.env.example`)
 
 ## Next
 
-- Social write APIs (favourites, ratings, comments)
 - JWT auth (replace `X-User` stub)
 - React frontend
+- Menu plan + shopping list APIs

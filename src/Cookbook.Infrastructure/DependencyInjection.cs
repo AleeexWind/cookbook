@@ -1,6 +1,9 @@
 using Cookbook.Application.Abstractions;
+using Cookbook.Domain.Favourites;
+using Cookbook.Domain.Recipes;
 using Cookbook.Infrastructure.Persistence;
 using Cookbook.Infrastructure.ReadStores;
+using Cookbook.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,10 +31,7 @@ public static class DependencyInjection
         services.AddDbContext<CookbookDbContext>(options =>
             options.UseNpgsql(connectionString));
 
-        services.AddScoped<IRecipeReadStore, RecipeReadStore>();
-        services.AddScoped<IFavouriteReadStore, FavouriteReadStore>();
-        services.AddScoped<IUserReadStore, UserReadStore>();
-        services.AddScoped<UserReadStore>();
+        RegisterStoresAndRepositories(services);
 
         return services;
     }
@@ -44,10 +44,17 @@ public static class DependencyInjection
         Action<DbContextOptionsBuilder> configure)
     {
         services.AddDbContext<CookbookDbContext>(configure);
+        RegisterStoresAndRepositories(services);
+        return services;
+    }
+
+    private static void RegisterStoresAndRepositories(IServiceCollection services)
+    {
         services.AddScoped<IRecipeReadStore, RecipeReadStore>();
         services.AddScoped<IFavouriteReadStore, FavouriteReadStore>();
         services.AddScoped<IUserReadStore, UserReadStore>();
         services.AddScoped<UserReadStore>();
-        return services;
+        services.AddScoped<IRecipeRepository, RecipeRepository>();
+        services.AddScoped<IFavouriteRepository, FavouriteRepository>();
     }
 }
