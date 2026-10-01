@@ -46,7 +46,8 @@ public sealed record IngredientDto(string Name, decimal Quantity, string Unit);
 /// <summary>
 /// A comment on recipe details.
 /// </summary>
+/// <param name="Id">Comment id.</param>
 /// <param name="AuthorName">Author display name.</param>
 /// <param name="Text">Comment text.</param>
 /// <param name="PostedAt">Posted timestamp.</param>
-public sealed record CommentDto(string AuthorName, string Text, DateTimeOffset PostedAt);
+public sealed record CommentDto(Guid Id, string AuthorName, string Text, DateTimeOffset PostedAt);

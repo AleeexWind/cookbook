@@ -63,6 +63,7 @@ internal sealed class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
             owned.ToTable("IngredientLines");
             owned.WithOwner().HasForeignKey("RecipeId");
             owned.HasKey(i => i.Id);
+            owned.Property(i => i.Id).ValueGeneratedNever();
             owned.Property(i => i.Name).HasMaxLength(200).IsRequired();
             owned.Property(i => i.Quantity).HasPrecision(18, 4).IsRequired();
             owned.Property(i => i.Unit).HasConversion<string>().HasMaxLength(32);
@@ -73,6 +74,7 @@ internal sealed class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
             owned.ToTable("CookingSteps");
             owned.WithOwner().HasForeignKey("RecipeId");
             owned.HasKey(s => s.Id);
+            owned.Property(s => s.Id).ValueGeneratedNever();
             owned.Property(s => s.Order).IsRequired();
             owned.Property(s => s.Instruction).HasMaxLength(4000).IsRequired();
         });
@@ -82,6 +84,7 @@ internal sealed class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
             owned.ToTable("Ratings");
             owned.WithOwner().HasForeignKey("RecipeId");
             owned.HasKey(x => x.Id);
+            owned.Property(x => x.Id).ValueGeneratedNever();
             owned.Property(x => x.Stars).IsRequired();
             owned.Property(x => x.UserId)
                 .HasConversion(id => id.Value, value => new UserId(value));
@@ -92,6 +95,7 @@ internal sealed class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
             owned.ToTable("Comments");
             owned.WithOwner().HasForeignKey("RecipeId");
             owned.HasKey(c => c.Id);
+            owned.Property(c => c.Id).ValueGeneratedNever();
             owned.Property(c => c.Text).HasMaxLength(4000).IsRequired();
             owned.Property(c => c.PostedAt).IsRequired();
             owned.Property(c => c.AuthorId)

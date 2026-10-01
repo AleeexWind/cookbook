@@ -43,7 +43,7 @@ public sealed class GetRecipeDetailsQueryHandler(
         {
             var commentAuthor = await userReadStore.GetDisplayNameAsync(comment.AuthorId, cancellationToken)
                 ?? comment.AuthorId.ToString();
-            comments.Add(new CommentDto(commentAuthor, comment.Text, comment.PostedAt));
+            comments.Add(new CommentDto(comment.Id, commentAuthor, comment.Text, comment.PostedAt));
         }
 
         return new RecipeDetailsDto(

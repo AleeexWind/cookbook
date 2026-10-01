@@ -18,6 +18,7 @@ public static class DependencyInjection
     {
         services.AddMediatR(configuration =>
             configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+        services.AddSingleton(TimeProvider.System);
 
         return services;
     }

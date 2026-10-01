@@ -32,6 +32,10 @@ Optional header `X-User: alice` or `X-User: bob`. Omit the header for a guest.
 
 - `GET /api/recipes?search=&sort=newest|averageRatingAsc|averageRatingDesc`
 - `GET /api/recipes/{id}?portions=`
+- `PUT /api/recipes/{id}/favourite` — body `{ "isActive": true|false }` (auth required)
+- `PUT /api/recipes/{id}/rating` — body `{ "stars": 1-5 }` (auth required, once)
+- `POST /api/recipes/{id}/comments` — body `{ "text": "..." }` (auth required)
+- `DELETE /api/recipes/{id}/comments/{commentId}` — recipe author only
 
 ## Local run (without Docker)
 
