@@ -1,0 +1,16 @@
+**/.git
+**/.gitignore
+**/.cursor
+**/bin
+**/obj
+**/tests
+**/node_modules
+**/.vs
+**/.idea
+**/*.user
+**/.docs
+**/agent-transcripts
+**/CONTEXT.md
+**/.features
+**/*.md
+!README.md

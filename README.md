@@ -2,18 +2,27 @@
 
 Full-stack cookbook application (C# / React). Backend uses DDD + Clean Architecture.
 
-## Backend (current)
+## Run with Docker (recommended)
 
-Prerequisites: .NET 9 SDK, PostgreSQL running locally.
+Prerequisites: Docker Desktop (or Docker Engine + Compose).
 
-1. Update the connection string in [`src/Cookbook.Api/appsettings.Development.json`](src/Cookbook.Api/appsettings.Development.json) if needed.
-2. Run the API:
+1. Copy env template and edit if needed (`.env` is gitignored):
 
 ```bash
-dotnet run --project src/Cookbook.Api
+cp .env.example .env
 ```
 
-3. Open OpenAPI at `/openapi/v1.json` (Development).
+2. Start the stack:
+
+```bash
+docker compose up --build
+```
+
+- API: `http://localhost:8080` (or `API_PORT` from `.env`)
+- OpenAPI: `http://localhost:8080/openapi/v1.json`
+- Recipes: `GET http://localhost:8080/api/recipes`
+
+Credentials live only in `.env` (see `.env.example`). Do not commit `.env`.
 
 ### Auth stub
 
@@ -24,7 +33,19 @@ Optional header `X-User: alice` or `X-User: bob`. Omit the header for a guest.
 - `GET /api/recipes?search=&sort=newest|averageRatingAsc|averageRatingDesc`
 - `GET /api/recipes/{id}?portions=`
 
-### Tests
+## Local run (without Docker)
+
+Prerequisites: .NET 9 SDK, PostgreSQL running locally.
+
+Set the connection string via user secrets or environment (do not put passwords in committed appsettings):
+
+```bash
+dotnet user-secrets init --project src/Cookbook.Api
+dotnet user-secrets set "ConnectionStrings:Cookbook" "Host=localhost;Port=5432;Database=cookbook;Username=YOUR_USER;Password=YOUR_PASSWORD" --project src/Cookbook.Api
+dotnet run --project src/Cookbook.Api
+```
+
+## Tests
 
 ```bash
 dotnet test Cookbook.sln
