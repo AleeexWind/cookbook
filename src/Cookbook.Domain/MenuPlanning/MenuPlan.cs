@@ -27,7 +27,7 @@ public sealed class MenuPlan : AggregateRoot
         MealType.Dinner
     ];
 
-    private readonly List<MealSlot> _slots;
+    private readonly List<MealSlot> _slots = [];
 
     /// <summary>
     /// Gets the owner of the plan.
@@ -43,6 +43,13 @@ public sealed class MenuPlan : AggregateRoot
     /// Gets all meal slots.
     /// </summary>
     public IReadOnlyList<MealSlot> Slots => _slots;
+
+    /// <summary>
+    /// EF Core materialization constructor.
+    /// </summary>
+    private MenuPlan()
+    {
+    }
 
     private MenuPlan(Guid id, UserId ownerId, Portions portions, List<MealSlot> slots)
         : base(id)

@@ -3,7 +3,7 @@ using Cookbook.Domain.Users;
 namespace Cookbook.Infrastructure.Persistence;
 
 /// <summary>
-/// Persisted user identity used for display names and auth stub resolution.
+/// Persisted user identity used for display names and authentication.
 /// </summary>
 public sealed class UserAccount
 {
@@ -16,6 +16,11 @@ public sealed class UserAccount
     /// Gets or sets the login/display name (alice, bob).
     /// </summary>
     public string UserName { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the ASP.NET Identity password hash.
+    /// </summary>
+    public string PasswordHash { get; set; } = string.Empty;
 
     /// <summary>
     /// Converts to a domain user id.

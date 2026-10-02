@@ -1,4 +1,5 @@
 using Cookbook.Domain.Favourites;
+using Cookbook.Domain.MenuPlanning;
 using Cookbook.Domain.Recipes;
 using Cookbook.Domain.Users;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,11 @@ public sealed class CookbookDbContext(DbContextOptions<CookbookDbContext> option
     /// Gets the favourites set.
     /// </summary>
     public DbSet<Favourite> Favourites => Set<Favourite>();
+
+    /// <summary>
+    /// Gets the menu plans set.
+    /// </summary>
+    public DbSet<MenuPlan> MenuPlans => Set<MenuPlan>();
 
     /// <summary>
     /// Gets the users set.
