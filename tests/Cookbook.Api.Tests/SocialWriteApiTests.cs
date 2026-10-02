@@ -36,7 +36,7 @@ public sealed class SocialWriteApiTests : IClassFixture<CookbookApiFactory>
     public async Task Bob_can_activate_and_deactivate_favourite()
     {
         var client = await _factory.CreateSeededClientAsync();
-        client.DefaultRequestHeaders.Add("X-User", "bob");
+        await _factory.AuthenticateAsAsync(client, "bob");
 
         var activate = await client.PutAsJsonAsync(
             $"/api/recipes/{SeedIds.PastaCarbonara}/favourite",
@@ -65,7 +65,7 @@ public sealed class SocialWriteApiTests : IClassFixture<CookbookApiFactory>
         var client = await _factory.CreateSeededClientAsync();
         var recipeId = await AddPublicRecipeAsync();
 
-        client.DefaultRequestHeaders.Add("X-User", "bob");
+        await _factory.AuthenticateAsAsync(client, "bob");
         var first = await client.PutAsJsonAsync($"/api/recipes/{recipeId}/rating", new { stars = 5 });
         Assert.Equal(HttpStatusCode.OK, first.StatusCode);
 
@@ -77,7 +77,7 @@ public sealed class SocialWriteApiTests : IClassFixture<CookbookApiFactory>
     public async Task Bob_comments_and_alice_deletes_bob_cannot()
     {
         var client = await _factory.CreateSeededClientAsync();
-        client.DefaultRequestHeaders.Add("X-User", "bob");
+        await _factory.AuthenticateAsAsync(client, "bob");
 
         var create = await client.PostAsJsonAsync(
             $"/api/recipes/{SeedIds.PastaCarbonara}/comments",
@@ -90,8 +90,8 @@ public sealed class SocialWriteApiTests : IClassFixture<CookbookApiFactory>
             $"/api/recipes/{SeedIds.PastaCarbonara}/comments/{comment.Id}");
         Assert.Equal(HttpStatusCode.Forbidden, bobDelete.StatusCode);
 
-        client.DefaultRequestHeaders.Remove("X-User");
-        client.DefaultRequestHeaders.Add("X-User", "alice");
+        client.DefaultRequestHeaders.Authorization = null;
+        await _factory.AuthenticateAsAsync(client, "alice");
         var aliceDelete = await client.DeleteAsync(
             $"/api/recipes/{SeedIds.PastaCarbonara}/comments/{comment.Id}");
         Assert.Equal(HttpStatusCode.NoContent, aliceDelete.StatusCode);

@@ -23,6 +23,13 @@ public sealed class MealSlot : Entity
     /// </summary>
     public RecipeId? RecipeId { get; private set; }
 
+    /// <summary>
+    /// EF Core materialization constructor.
+    /// </summary>
+    private MealSlot()
+    {
+    }
+
     internal MealSlot(Guid id, DayOfWeek day, MealType mealType, RecipeId? recipeId = null)
         : base(id)
     {

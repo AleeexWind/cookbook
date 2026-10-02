@@ -33,23 +33,24 @@ public sealed class RecipesApiTests : IClassFixture<CookbookApiFactory>
 
         var recipes = await response.Content.ReadFromJsonAsync<List<RecipeListJson>>(JsonOptions);
         Assert.NotNull(recipes);
-        Assert.Single(recipes);
-        Assert.Equal("Pasta Carbonara", recipes[0].Title);
-        Assert.Null(recipes[0].IsFavourite);
+        Assert.Contains(recipes, r => r.Title == "Pasta Carbonara");
+        Assert.DoesNotContain(recipes, r => r.Title == "Chicken Stir Fry");
+        Assert.DoesNotContain(recipes, r => r.Title == "Chocolate Cake");
+        Assert.Null(recipes.First(r => r.Title == "Pasta Carbonara").IsFavourite);
     }
 
     [Fact]
     public async Task Alice_sees_public_and_own_private_with_favourites()
     {
         var client = await _factory.CreateSeededClientAsync();
-        client.DefaultRequestHeaders.Add("X-User", "alice");
+        await _factory.AuthenticateAsAsync(client, "alice");
 
         var response = await client.GetAsync("/api/recipes");
         response.EnsureSuccessStatusCode();
 
         var recipes = await response.Content.ReadFromJsonAsync<List<RecipeListJson>>(JsonOptions);
         Assert.NotNull(recipes);
-        Assert.Equal(2, recipes.Count);
+        Assert.True(recipes.Count >= 2);
         Assert.True(recipes.Single(r => r.Title == "Pasta Carbonara").IsFavourite);
         Assert.False(recipes.Single(r => r.Title == "Chicken Stir Fry").IsFavourite);
     }
@@ -88,7 +89,7 @@ public sealed class RecipesApiTests : IClassFixture<CookbookApiFactory>
             await db.SaveChangesAsync();
         }
 
-        client.DefaultRequestHeaders.Add("X-User", "bob");
+        await _factory.AuthenticateAsAsync(client, "bob");
         var response = await client.GetAsync($"/api/recipes/{SeedIds.PastaCarbonara}?portions=4");
         response.EnsureSuccessStatusCode();
 

@@ -8,6 +8,10 @@ obj/
 TestResults/
 *.nupkg
 
+## Node / frontend
+**/node_modules/
+**/dist/
+
 ## Secrets / local overrides
 .env
 **/appsettings.*.local.json

@@ -18,34 +18,51 @@ cp .env.example .env
 docker compose up --build
 ```
 
-- API: `http://localhost:8080` (or `API_PORT` from `.env`)
+- UI: `http://localhost:5173` (or `FRONTEND_PORT`)
+- API: `http://localhost:8080` (or `API_PORT`)
 - OpenAPI: `http://localhost:8080/openapi/v1.json`
-- Recipes: `GET http://localhost:8080/api/recipes`
+- MinIO console: `http://localhost:9001`
 
 Credentials live only in `.env` (see `.env.example`). Do not commit `.env`.
 
-### Auth stub
+### Auth (JWT)
 
-Optional header `X-User: alice` or `X-User: bob`. Omit the header for a guest.
+- `POST /api/auth/register` — body `{ "userName": "...", "password": "..." }`
+- `POST /api/auth/login` — returns `{ userId, userName, accessToken }`
+- Send `Authorization: Bearer <token>` on protected endpoints
+- Seed users: `alice` / `bob`, password `Password1!` (local demo only)
 
 ### Endpoints
 
 - `GET /api/recipes?search=&sort=newest|averageRatingAsc|averageRatingDesc`
 - `GET /api/recipes/{id}?portions=`
+- `GET /api/photos/{fileName}`
 - `PUT /api/recipes/{id}/favourite` — body `{ "isActive": true|false }` (auth required)
 - `PUT /api/recipes/{id}/rating` — body `{ "stars": 1-5 }` (auth required, once)
 - `POST /api/recipes/{id}/comments` — body `{ "text": "..." }` (auth required)
 - `DELETE /api/recipes/{id}/comments/{commentId}` — recipe author only
+- `GET /api/menu-plan` / `PUT /api/menu-plan/portions`
+- `PUT|DELETE /api/menu-plan/slots/{day}/{meal}`
+- `GET /api/menu-plan/shopping-list` / `GET /api/menu-plan/shopping-list/export`
 
-## Local run (without Docker)
+## Local frontend (without Docker UI)
+
+```bash
+cd src/cookbook-web
+npm install
+npm run dev
+```
+
+Vite proxies `/api` to `http://localhost:8080`.
+
+## Local API (without Docker)
 
 Prerequisites: .NET 9 SDK, PostgreSQL running locally.
-
-Set the connection string via user secrets or environment (do not put passwords in committed appsettings):
 
 ```bash
 dotnet user-secrets init --project src/Cookbook.Api
 dotnet user-secrets set "ConnectionStrings:Cookbook" "Host=localhost;Port=5432;Database=cookbook;Username=YOUR_USER;Password=YOUR_PASSWORD" --project src/Cookbook.Api
+dotnet user-secrets set "Jwt:Key" "change-me-to-a-long-random-secret-key!!" --project src/Cookbook.Api
 dotnet run --project src/Cookbook.Api
 ```
 

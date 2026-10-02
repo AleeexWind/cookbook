@@ -45,6 +45,26 @@ namespace Cookbook.Infrastructure.Persistence.Migrations
                     b.ToTable("Favourites", (string)null);
                 });
 
+            modelBuilder.Entity("Cookbook.Domain.MenuPlanning.MenuPlan", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Portions")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId")
+                        .IsUnique();
+
+                    b.ToTable("MenuPlans", (string)null);
+                });
+
             modelBuilder.Entity("Cookbook.Domain.Recipes.Recipe", b =>
                 {
                     b.Property<Guid>("Id")
@@ -112,6 +132,11 @@ namespace Cookbook.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -125,12 +150,47 @@ namespace Cookbook.Infrastructure.Persistence.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("Cookbook.Domain.MenuPlanning.MenuPlan", b =>
+                {
+                    b.OwnsMany("Cookbook.Domain.MenuPlanning.MealSlot", "Slots", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Day")
+                                .IsRequired()
+                                .HasMaxLength(16)
+                                .HasColumnType("character varying(16)");
+
+                            b1.Property<string>("MealType")
+                                .IsRequired()
+                                .HasMaxLength(16)
+                                .HasColumnType("character varying(16)");
+
+                            b1.Property<Guid>("MenuPlanId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<Guid?>("RecipeId")
+                                .HasColumnType("uuid");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("MenuPlanId");
+
+                            b1.ToTable("MealSlots", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("MenuPlanId");
+                        });
+
+                    b.Navigation("Slots");
+                });
+
             modelBuilder.Entity("Cookbook.Domain.Recipes.Recipe", b =>
                 {
                     b.OwnsMany("Cookbook.Domain.Recipes.Comment", "Comments", b1 =>
                         {
                             b1.Property<Guid>("Id")
-                                .ValueGeneratedOnAdd()
                                 .HasColumnType("uuid");
 
                             b1.Property<Guid>("AuthorId")
@@ -160,7 +220,6 @@ namespace Cookbook.Infrastructure.Persistence.Migrations
                     b.OwnsMany("Cookbook.Domain.Recipes.CookingStep", "Steps", b1 =>
                         {
                             b1.Property<Guid>("Id")
-                                .ValueGeneratedOnAdd()
                                 .HasColumnType("uuid");
 
                             b1.Property<string>("Instruction")
@@ -187,7 +246,6 @@ namespace Cookbook.Infrastructure.Persistence.Migrations
                     b.OwnsMany("Cookbook.Domain.Recipes.IngredientLine", "Ingredients", b1 =>
                         {
                             b1.Property<Guid>("Id")
-                                .ValueGeneratedOnAdd()
                                 .HasColumnType("uuid");
 
                             b1.Property<string>("Name")
@@ -220,7 +278,6 @@ namespace Cookbook.Infrastructure.Persistence.Migrations
                     b.OwnsMany("Cookbook.Domain.Recipes.Rating", "Ratings", b1 =>
                         {
                             b1.Property<Guid>("Id")
-                                .ValueGeneratedOnAdd()
                                 .HasColumnType("uuid");
 
                             b1.Property<Guid>("RecipeId")
