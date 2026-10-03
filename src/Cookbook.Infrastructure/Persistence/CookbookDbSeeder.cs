@@ -156,11 +156,7 @@ public static class CookbookDbSeeder
                 new Portions(2),
                 new DateTimeOffset(2026, 8, commentDay, 0, 0, 0, TimeSpan.Zero),
                 ingredients: seed.Ingredients,
-                steps:
-                [
-                    CookingStep.Create(1, $"Prepare ingredients for {seed.Title}."),
-                    CookingStep.Create(2, $"Cook and serve {seed.Title}.")
-                ],
+                steps: seed.Steps,
                 tags: seed.Tags.Select(t => new Tag(t)).ToArray(),
                 id: seed.Id);
 
