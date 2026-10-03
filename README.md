@@ -20,7 +20,8 @@ docker compose up --build
 
 - UI: `http://localhost:5173` (or `FRONTEND_PORT`)
 - API: `http://localhost:8080` (or `API_PORT`)
-- OpenAPI: `http://localhost:8080/openapi/v1.json`
+- Swagger UI: `http://localhost:8080/swagger`
+- OpenAPI JSON: `http://localhost:8080/openapi/v1.json`
 - MinIO console: `http://localhost:9001`
 
 Credentials live only in `.env` (see `.env.example`). Do not commit `.env`.
