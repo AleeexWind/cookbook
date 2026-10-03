@@ -38,6 +38,11 @@ public sealed class GetRecipeDetailsQueryHandler(
             .Select(i => new IngredientDto(i.Name, i.Quantity, MeasurementUnitFormatter.ToLabel(i.Unit)))
             .ToList();
 
+        var steps = recipe.Steps
+            .OrderBy(s => s.Order)
+            .Select(s => new CookingStepDto(s.Order, s.Instruction))
+            .ToList();
+
         var comments = new List<CommentDto>();
         foreach (var comment in recipe.GetCommentsNewestFirst())
         {
@@ -60,6 +65,7 @@ public sealed class GetRecipeDetailsQueryHandler(
             authorName,
             targetPortions.Value,
             ingredients,
+            steps,
             comments,
             isFavourite);
     }

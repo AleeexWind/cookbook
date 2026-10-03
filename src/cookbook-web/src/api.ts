@@ -41,6 +41,7 @@ export type RecipeDetails = {
   authorName: string
   portions: number
   ingredients: { name: string; quantity: number; unit: string }[]
+  steps: { order: number; instruction: string }[]
   comments: CommentDto[]
   isFavourite: boolean | null
 }

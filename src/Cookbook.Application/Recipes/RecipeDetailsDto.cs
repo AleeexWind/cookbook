@@ -16,6 +16,7 @@ namespace Cookbook.Application.Recipes;
 /// <param name="AuthorName">Author display name.</param>
 /// <param name="Portions">Portions used for ingredient quantities.</param>
 /// <param name="Ingredients">Scaled ingredients.</param>
+/// <param name="Steps">Cooking steps ordered by step order.</param>
 /// <param name="Comments">Comments newest first.</param>
 /// <param name="IsFavourite">Favourite mark for authenticated viewers; null for guests.</param>
 public sealed record RecipeDetailsDto(
@@ -32,6 +33,7 @@ public sealed record RecipeDetailsDto(
     string AuthorName,
     int Portions,
     IReadOnlyList<IngredientDto> Ingredients,
+    IReadOnlyList<CookingStepDto> Steps,
     IReadOnlyList<CommentDto> Comments,
     bool? IsFavourite);
 
@@ -42,6 +44,13 @@ public sealed record RecipeDetailsDto(
 /// <param name="Quantity">Scaled quantity.</param>
 /// <param name="Unit">Unit label (g, units, ml).</param>
 public sealed record IngredientDto(string Name, decimal Quantity, string Unit);
+
+/// <summary>
+/// A cooking step on recipe details.
+/// </summary>
+/// <param name="Order">Step order starting from 1.</param>
+/// <param name="Instruction">Instruction text.</param>
+public sealed record CookingStepDto(int Order, string Instruction);
 
 /// <summary>
 /// A comment on recipe details.

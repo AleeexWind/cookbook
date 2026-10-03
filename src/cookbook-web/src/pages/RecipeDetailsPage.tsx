@@ -154,6 +154,15 @@ export function RecipeDetailsPage() {
           ))}
         </ul>
 
+        <h2>Способ приготовления</h2>
+        <ol className="cooking-steps">
+          {recipe.steps.map((step) => (
+            <li key={step.order} value={step.order}>
+              {step.instruction}
+            </li>
+          ))}
+        </ol>
+
         {token && (
           <section>
             <h2>Оценка</h2>

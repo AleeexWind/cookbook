@@ -1,15 +1,17 @@
 Feature: Get recipe details
-    As a user I want to see full recipe details including characteristics and ingredients
-    so that I know what the recipe is and what I need to cook
+    As a user I want to see full recipe details including characteristics, ingredients and cooking steps
+    so that I know what the recipe is and how to cook it
 
     Scenario: Guest views recipe details without favourites mark
         Given There is a public recipe "Pasta Carbonara" for 2 portions in the database
         And The recipe has the following ingredients
+        And The recipe has the following cooking steps
         And The recipe has the following comments
         And I am not logged in
         When I open the recipe "Pasta Carbonara" from the recipes page
         Then I should see title, description, cooking time, difficulty, photo, category, tags, average rating (1-5 stars), visibility and author
         And I should see ingredients with name, quantity, unit and portions set to 2
+        And I should see cooking steps ordered by order with instruction
         And I should see comments ordered from newest to oldest with author name, text and posted at
         And I should not see the favourites mark
 
@@ -25,6 +27,11 @@ Feature: Get recipe details
        | Milk       | 50       | ml    |
 
     Examples:
+       | Order | Instruction         |
+       | 1     | Boil the pasta.     |
+       | 2     | Mix eggs and bacon. |
+
+    Examples:
        | Author | Text            | Posted at        |
        | bob    | Looks delicious  | 2026-09-28 18:00 |
        | alice  | Family favorite  | 2026-09-27 12:00 |
@@ -33,12 +40,14 @@ Feature: Get recipe details
     Scenario: Authorized user views recipe details with favourites mark
         Given There is a public recipe "Pasta Carbonara" for 2 portions in the database
         And The recipe has the following ingredients
+        And The recipe has the following cooking steps
         And The recipe has the following comments
         And I am logged in as "bob"
         And I have favourited the recipe "Pasta Carbonara"
         When I open the recipe "Pasta Carbonara" from the recipes page
         Then I should see title, description, cooking time, difficulty, photo, category, tags, average rating (1-5 stars), visibility and author
         And I should see ingredients with name, quantity, unit and portions set to 2
+        And I should see cooking steps ordered by order with instruction
         And I should see comments ordered from newest to oldest with author name, text and posted at
         And I should see the favourites mark as active
 
@@ -52,6 +61,11 @@ Feature: Get recipe details
        | Eggs       | 2        | units |
        | Bacon      | 100      | g     |
        | Milk       | 50       | ml    |
+
+    Examples:
+       | Order | Instruction         |
+       | 1     | Boil the pasta.     |
+       | 2     | Mix eggs and bacon. |
 
     Examples:
        | Author | Text            | Posted at        |
