@@ -21,6 +21,11 @@ public sealed class GetRecipeDetailsQueryTests
         Assert.Equal(4, details.Ingredients.Count);
         Assert.Equal(200, details.Ingredients.Single(i => i.Name == "Spaghetti").Quantity);
         Assert.Equal("g", details.Ingredients.Single(i => i.Name == "Spaghetti").Unit);
+        Assert.Equal(2, details.Steps.Count);
+        Assert.Equal(1, details.Steps[0].Order);
+        Assert.Equal("Boil the pasta.", details.Steps[0].Instruction);
+        Assert.Equal(2, details.Steps[1].Order);
+        Assert.Equal("Mix eggs and bacon.", details.Steps[1].Instruction);
         Assert.Equal(
             ["Looks delicious", "Family favorite", "Made it twice"],
             details.Comments.Select(c => c.Text).ToArray());

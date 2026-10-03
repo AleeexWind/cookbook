@@ -41,6 +41,11 @@ internal sealed class RecipeFixtures
                 IngredientLine.Create("Bacon", 100, MeasurementUnit.Grams),
                 IngredientLine.Create("Milk", 50, MeasurementUnit.Milliliters)
             ],
+            steps:
+            [
+                CookingStep.Create(1, "Boil the pasta."),
+                CookingStep.Create(2, "Mix eggs and bacon.")
+            ],
             tags: [new Tag("quick")]);
 
         PastaCarbonara.AddRating(Alice, 4);

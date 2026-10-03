@@ -69,6 +69,11 @@ public static class CookbookDbSeeder
                 IngredientLine.Create("Bacon", 100, MeasurementUnit.Grams),
                 IngredientLine.Create("Milk", 50, MeasurementUnit.Milliliters)
             ],
+            steps:
+            [
+                CookingStep.Create(1, "Boil the pasta."),
+                CookingStep.Create(2, "Mix eggs and bacon.")
+            ],
             tags: [new Tag("quick")],
             id: SeedIds.PastaCarbonara);
 
@@ -95,6 +100,11 @@ public static class CookbookDbSeeder
                 IngredientLine.Create("Rice", 200, MeasurementUnit.Grams),
                 IngredientLine.Create("Soy sauce", 30, MeasurementUnit.Milliliters)
             ],
+            steps:
+            [
+                CookingStep.Create(1, "Cook the rice."),
+                CookingStep.Create(2, "Stir-fry chicken with soy sauce.")
+            ],
             tags: [new Tag("quick"), new Tag("vegan")],
             id: SeedIds.ChickenStirFry);
 
@@ -117,6 +127,11 @@ public static class CookbookDbSeeder
                 IngredientLine.Create("Chocolate", 200, MeasurementUnit.Grams),
                 IngredientLine.Create("Flour", 150, MeasurementUnit.Grams),
                 IngredientLine.Create("Eggs", 3, MeasurementUnit.Units)
+            ],
+            steps:
+            [
+                CookingStep.Create(1, "Melt the chocolate."),
+                CookingStep.Create(2, "Mix batter and bake.")
             ],
             id: SeedIds.ChocolateCake);
 
@@ -141,6 +156,11 @@ public static class CookbookDbSeeder
                 new Portions(2),
                 new DateTimeOffset(2026, 8, commentDay, 0, 0, 0, TimeSpan.Zero),
                 ingredients: seed.Ingredients,
+                steps:
+                [
+                    CookingStep.Create(1, $"Prepare ingredients for {seed.Title}."),
+                    CookingStep.Create(2, $"Cook and serve {seed.Title}.")
+                ],
                 tags: seed.Tags.Select(t => new Tag(t)).ToArray(),
                 id: seed.Id);
 

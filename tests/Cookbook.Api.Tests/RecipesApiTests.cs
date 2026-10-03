@@ -98,6 +98,11 @@ public sealed class RecipesApiTests : IClassFixture<CookbookApiFactory>
         Assert.Equal(4, details.Portions);
         Assert.True(details.IsFavourite);
         Assert.Equal(400, details.Ingredients.Single(i => i.Name == "Spaghetti").Quantity);
+        Assert.Equal(2, details.Steps.Count);
+        Assert.Equal(1, details.Steps[0].Order);
+        Assert.Equal("Boil the pasta.", details.Steps[0].Instruction);
+        Assert.Equal(2, details.Steps[1].Order);
+        Assert.Equal("Mix eggs and bacon.", details.Steps[1].Instruction);
         Assert.Equal("bob", details.Comments[0].AuthorName);
     }
 
@@ -110,9 +115,12 @@ public sealed class RecipesApiTests : IClassFixture<CookbookApiFactory>
         int Portions,
         bool? IsFavourite,
         List<IngredientJson> Ingredients,
+        List<CookingStepJson> Steps,
         List<CommentJson> Comments);
 
     private sealed record IngredientJson(string Name, decimal Quantity, string Unit);
+
+    private sealed record CookingStepJson(int Order, string Instruction);
 
     private sealed record CommentJson(string AuthorName, string Text);
 }
