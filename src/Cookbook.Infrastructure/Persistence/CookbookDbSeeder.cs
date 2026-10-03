@@ -37,6 +37,7 @@ public static class CookbookDbSeeder
 
         if (await db.Users.AnyAsync(cancellationToken))
         {
+            await BackfillMissingCookingStepsAsync(db, logger, cancellationToken);
             return;
         }
 
@@ -69,11 +70,7 @@ public static class CookbookDbSeeder
                 IngredientLine.Create("Bacon", 100, MeasurementUnit.Grams),
                 IngredientLine.Create("Milk", 50, MeasurementUnit.Milliliters)
             ],
-            steps:
-            [
-                CookingStep.Create(1, "Boil the pasta."),
-                CookingStep.Create(2, "Mix eggs and bacon.")
-            ],
+            steps: CreateStepsForRecipe(SeedIds.PastaCarbonara),
             tags: [new Tag("quick")],
             id: SeedIds.PastaCarbonara);
 
@@ -100,11 +97,7 @@ public static class CookbookDbSeeder
                 IngredientLine.Create("Rice", 200, MeasurementUnit.Grams),
                 IngredientLine.Create("Soy sauce", 30, MeasurementUnit.Milliliters)
             ],
-            steps:
-            [
-                CookingStep.Create(1, "Cook the rice."),
-                CookingStep.Create(2, "Stir-fry chicken with soy sauce.")
-            ],
+            steps: CreateStepsForRecipe(SeedIds.ChickenStirFry),
             tags: [new Tag("quick"), new Tag("vegan")],
             id: SeedIds.ChickenStirFry);
 
@@ -128,11 +121,7 @@ public static class CookbookDbSeeder
                 IngredientLine.Create("Flour", 150, MeasurementUnit.Grams),
                 IngredientLine.Create("Eggs", 3, MeasurementUnit.Units)
             ],
-            steps:
-            [
-                CookingStep.Create(1, "Melt the chocolate."),
-                CookingStep.Create(2, "Mix batter and bake.")
-            ],
+            steps: CreateStepsForRecipe(SeedIds.ChocolateCake),
             id: SeedIds.ChocolateCake);
 
         cake.AddRating(bob, 5);
@@ -156,7 +145,7 @@ public static class CookbookDbSeeder
                 new Portions(2),
                 new DateTimeOffset(2026, 8, commentDay, 0, 0, 0, TimeSpan.Zero),
                 ingredients: seed.Ingredients,
-                steps: seed.Steps,
+                steps: CreateStepsForRecipe(seed.Id),
                 tags: seed.Tags.Select(t => new Tag(t)).ToArray(),
                 id: seed.Id);
 
@@ -227,5 +216,91 @@ public static class CookbookDbSeeder
         var photos = services.GetService<IPhotoStorage>();
         var logger = services.GetService<ILoggerFactory>()?.CreateLogger("CookbookDbSeeder");
         await InitializeAsync(db, migrate, photos, logger, cancellationToken);
+    }
+
+    /// <summary>
+    /// Adds seed cooking steps to recipes that were created before steps were seeded.
+    /// </summary>
+    private static async Task BackfillMissingCookingStepsAsync(
+        CookbookDbContext db,
+        ILogger? logger,
+        CancellationToken cancellationToken)
+    {
+        var recipes = await db.Recipes
+            .Include(r => r.Steps)
+            .ToListAsync(cancellationToken);
+
+        var updatedCount = 0;
+        foreach (var recipe in recipes)
+        {
+            if (recipe.Steps.Count > 0)
+            {
+                continue;
+            }
+
+            var steps = CreateStepsForRecipe(recipe.Id);
+            if (steps.Length == 0)
+            {
+                continue;
+            }
+
+            foreach (var step in steps)
+            {
+                recipe.AddStep(step);
+            }
+
+            updatedCount++;
+        }
+
+        if (updatedCount == 0)
+        {
+            return;
+        }
+
+        await db.SaveChangesAsync(cancellationToken);
+        logger?.LogInformation("Backfilled cooking steps for {Count} recipes.", updatedCount);
+    }
+
+    /// <summary>
+    /// Creates cooking steps for a known seed recipe id.
+    /// </summary>
+    private static CookingStep[] CreateStepsForRecipe(Guid recipeId)
+    {
+        if (recipeId == SeedIds.PastaCarbonara)
+        {
+            return
+            [
+                CookingStep.Create(1, "Boil the pasta."),
+                CookingStep.Create(2, "Mix eggs and bacon.")
+            ];
+        }
+
+        if (recipeId == SeedIds.ChickenStirFry)
+        {
+            return
+            [
+                CookingStep.Create(1, "Cook the rice."),
+                CookingStep.Create(2, "Stir-fry chicken with soy sauce.")
+            ];
+        }
+
+        if (recipeId == SeedIds.ChocolateCake)
+        {
+            return
+            [
+                CookingStep.Create(1, "Melt the chocolate."),
+                CookingStep.Create(2, "Mix batter and bake.")
+            ];
+        }
+
+        var catalog = SeedCatalog.ExtraRecipes.FirstOrDefault(r => r.Id == recipeId);
+        if (catalog is null)
+        {
+            return [];
+        }
+
+        return catalog.Steps
+            .Select(step => CookingStep.Create(step.Order, step.Instruction))
+            .ToArray();
     }
 }

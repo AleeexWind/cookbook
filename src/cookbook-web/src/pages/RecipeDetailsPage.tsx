@@ -156,7 +156,7 @@ export function RecipeDetailsPage() {
 
         <h2>Способ приготовления</h2>
         <ol className="cooking-steps">
-          {recipe.steps.map((step) => (
+          {(recipe.steps ?? []).map((step) => (
             <li key={step.order} value={step.order}>
               {step.instruction}
             </li>
